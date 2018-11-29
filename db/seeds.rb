@@ -5,3 +5,7 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+for i in 0..15
+    Flower.create( name: [*('a'..'z')].sample(4).join, image: "http://www.image" + i.to_s, description: [*('A'..'Z')].sample(8).join)
+end
