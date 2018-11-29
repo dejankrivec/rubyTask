@@ -29,8 +29,7 @@ class LoggeduserController < ApplicationController
         sighting = Sighting.create(latitude: latitude, logitude: longitude, image: image, user_id: user_id, flower_id: flower_id, question: getRandomQuestion())
         likes = Like.create(user_id: user_id, sighting_id: sighting.id, likes: 0)
         if sighting.save and likes.save
-          response = { message: 'Sighting created successfully'}
-          render json: response, status: :created 
+          render json: sighting, status: :created 
         else
           response = { message: 'Something went wrong'}
           render json: response, status: :bad 
