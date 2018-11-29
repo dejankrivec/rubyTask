@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_29_142536) do
+ActiveRecord::Schema.define(version: 2018_11_29_154545) do
 
   create_table "flowers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
@@ -18,6 +18,27 @@ ActiveRecord::Schema.define(version: 2018_11_29_142536) do
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "likes", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.bigint "sighting_id"
+    t.index ["sighting_id"], name: "index_likes_on_sighting_id"
+    t.index ["user_id"], name: "index_likes_on_user_id"
+  end
+
+  create_table "sightings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "logitude"
+    t.integer "latitude"
+    t.string "image"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.bigint "flower_id"
+    t.index ["flower_id"], name: "index_sightings_on_flower_id"
+    t.index ["user_id"], name: "index_sightings_on_user_id"
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -29,4 +50,8 @@ ActiveRecord::Schema.define(version: 2018_11_29_142536) do
     t.string "password_digest"
   end
 
+  add_foreign_key "likes", "sightings"
+  add_foreign_key "likes", "users"
+  add_foreign_key "sightings", "flowers"
+  add_foreign_key "sightings", "users"
 end
