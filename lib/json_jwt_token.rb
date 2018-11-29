@@ -3,22 +3,21 @@ class JsonWebToken
     
     class << self
         def encode(payload, exp = 2.hours.from_now)
-            # set token expiration time 
-           
+            # token expiration
             payload[:exp] = exp.to_i
-            # this encodes the user data(payload) with our secret key
+            # encode data
             JWT.encode(payload, Rails.application.secret_key_base)
         end
     
         def decode(token)
-            #decodes the token to get user data (payload)
+            #decode data
             Rails.logger.debug("decoding")
             body = JWT.decode(token, Rails.application.secret_key_base)[0]
             Rails.logger.debug("decoded")
 
             HashWithIndifferentAccess.new body
     
-        # raise custom error to be handled by custom handler
+        # error handler
             rescue JWT::ExpiredSignature, JWT::VerificationError => e
                 raise ExceptionHandler::ExpiredSignature, e.message
             rescue JWT::DecodeError, JWT::VerificationError => e

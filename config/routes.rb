@@ -15,5 +15,4 @@ Rails.application.routes.draw do
   post 'destroyLikes', to: 'loggeduser#destroyLikes'
 
   post 'auth/login', to: 'users#login'
-  get 'test', to: 'users#test'
 end
