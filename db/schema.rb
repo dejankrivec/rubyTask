@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_29_154545) do
+ActiveRecord::Schema.define(version: 2018_11_29_175905) do
 
   create_table "flowers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 2018_11_29_154545) do
     t.datetime "updated_at", null: false
     t.bigint "user_id"
     t.bigint "sighting_id"
+    t.integer "likes"
     t.index ["sighting_id"], name: "index_likes_on_sighting_id"
     t.index ["user_id"], name: "index_likes_on_user_id"
   end
@@ -37,6 +38,7 @@ ActiveRecord::Schema.define(version: 2018_11_29_154545) do
     t.datetime "updated_at", null: false
     t.bigint "user_id"
     t.bigint "flower_id"
+    t.string "question"
     t.index ["flower_id"], name: "index_sightings_on_flower_id"
     t.index ["user_id"], name: "index_sightings_on_user_id"
   end

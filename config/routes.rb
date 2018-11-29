@@ -3,7 +3,16 @@ Rails.application.routes.draw do
 
   post 'auth/register', to: 'users#register'
 
-  get 'getUser', to: 'users#checkUser'
+  get 'getUsers', to: 'users#getUsers'
+  get 'getFlowers', to: 'users#getFlowers'
+
+  get 'getSightings', to: 'users#getSightingsByFlower'
+
+
+  post 'createSighting', to: 'loggeduser#createSighting'
+  post 'likeSighting', to: 'loggeduser#likeSighting'
+  post 'destroySighting', to: 'loggeduser#destroySighting'
+  post 'destroyLikes', to: 'loggeduser#destroyLikes'
 
   post 'auth/login', to: 'users#login'
   get 'test', to: 'users#test'

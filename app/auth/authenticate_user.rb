@@ -17,6 +17,8 @@ class AuthenticateUser
   
     private
     def user
+        user = User.where(:email => email).first
+
         return user if user && user.authenticate(password)
         errors.add :user_authentication, 'Invalid credentials'
         nil
