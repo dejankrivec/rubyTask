@@ -8,11 +8,10 @@ Things you may want to cover:
 * Ruby version 5 or above
 
 * MySql database
+change username password and host in database.yml file to connect to MySql database
 
 * run bundle install
-
 * run rake db:migrate for database
-
 * run rake db:seed to generate random flowers
 
 Open API x-www-form-urlencoded params
@@ -34,20 +33,20 @@ Open API x-www-form-urlencoded params
 Auth API => Authorization = Bearer + token and content-type = application/x-www-form-urlencoded
 
     POST http://localhost:3000/createSighting
-        params: latitude, longitude, image, user_id, flower_id
+        params: latitude, longitude, image, flower_id
         response:
             success: json object
             error: message
     http://localhost:3000/destroySighting
-        params: user_id and sighting_id
+        params: sighting_id
         response: message
     http://localhost:3000/likeSighting
-        params: user_id and sighting_id
+        params: sighting_id
         response:
             success: json object
             error: message
     http://localhost:3000/destroyLikes
-        params: user_id and sighting_id
+        params: sighting_id
         response:
             success: json object
             error: message
