@@ -60,3 +60,6 @@ gem "jwt"
 gem 'simple_command'
 gem 'bcrypt', '~> 3.1.7'
 gem 'rack-cors', :require => 'rack/cors'
+
+# background worker
+gem 'sucker_punch'

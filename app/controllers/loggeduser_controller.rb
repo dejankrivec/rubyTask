@@ -1,5 +1,6 @@
 require 'uri'
 require 'net/http'
+require "#{Rails.root}/app/workers/background_worker.rb"
 
 class LoggeduserController < ApplicationController
   
@@ -10,7 +11,7 @@ class LoggeduserController < ApplicationController
       latitude = params[:latitude]
       longitude = params[:longitude]
       image = params[:image]
-      user_id = params[:user_id]
+      user_id = @current_user.id.to_s
       flower_id = params[:flower_id]
 
       Rails.logger.debug("latitude: " + latitude)
@@ -26,9 +27,17 @@ class LoggeduserController < ApplicationController
       end
 
       if User.exists?(:id => user_id.to_i) and Flower.exists?(:id => flower_id.to_i)
-        sighting = Sighting.create(latitude: latitude, logitude: longitude, image: image, user_id: user_id, flower_id: flower_id, question: getRandomQuestion())
-        likes = Like.create(user_id: user_id, sighting_id: sighting.id, likes: 0)
-        if sighting.save and likes.save
+        question = getRandomQuestion();
+        sighting = Sighting.create(latitude: latitude, logitude: longitude, image: image, user_id: user_id, flower_id: flower_id, question: question)
+        #likes = Like.create(user_id: user_id, sighting_id: sighting.id, likes: 0)
+
+        like = Like.create(user_id: user_id, likes: 0)
+        like.sighting = sighting
+
+        if sighting.save and like.save
+          if question.nil?
+            BackgroundWorker.perform_in(3600, sighting.id) # 3600 seconds equals 1 hour
+          end
           render json: sighting, status: :created 
         else
           response = { message: 'Something went wrong'}
@@ -41,7 +50,7 @@ class LoggeduserController < ApplicationController
     end
 
     def likeSighting
-      user_id = params["user_id"]
+      user_id = @current_user.id.to_s
       sighting_id = params["sighting_id"]
       
       Rails.logger.debug("user_id: " + user_id.to_s)
@@ -64,18 +73,19 @@ class LoggeduserController < ApplicationController
     end
 
     def destroySighting
-      user_id = params["user_id"]
+      user_id = @current_user.id.to_s
       sighting_id = params["sighting_id"]
 
-      Sighting.where(id: sighting_id,user_id: user_id).destroy_all
       Like.where(user_id: user_id, sighting_id: sighting_id).destroy_all
+      Sighting.where(id: sighting_id,user_id: user_id).destroy_all
+      
 
       response = { message: 'Deleted'}
       render json: response, status: :ok 
     end
 
     def destroyLikes
-      user_id = params["user_id"]
+      user_id = @current_user.id.to_s
       sighting_id = params["sighting_id"]
       
       Rails.logger.debug("user_id: " + user_id.to_s)
@@ -103,9 +113,19 @@ class LoggeduserController < ApplicationController
 
       http = Net::HTTP.new(url.host, url.port)
       http.use_ssl = true
-      request = Net::HTTP::Get.new(url)
+      http.read_timeout = 0
+      http.open_timeout = 0
+      req = Net::HTTP::Get.new(url.to_s)
+      
+      begin
+        response = http.start() {|http|
+          http.request(req)
+        }
+        rescue Net::OpenTimeout, Net::ReadTimeout
+          return
+      end
 
-      response = http.request(request)
+      Rails.logger.debug("body: " + response.to_s)
       parsed_response = JSON.parse(response.body)
       Rails.logger.debug("body: " + parsed_response["results"][0]["question"].to_s)
       parsed_response["results"][0]["question"].to_s
