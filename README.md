@@ -9,10 +9,17 @@ Things you may want to cover:
 
 * MySql database
 change username password and host in database.yml file to connect to MySql database
+set different host for development,test and production 
 
-* run bundle install
-* run rake db:migrate for database
-* run rake db:seed to generate random flowers
+* bundle install
+* rake db:create db:migrate for database
+* rails g rspec:install ## for tests
+* rake db:seed to generate random flowers
+
+*** tests ***
+* rails g rspec:install
+* rails db:migrate RAILS_ENV=test
+* rspec spec/requests/users_spec.rb run tests
 
 Open API x-www-form-urlencoded params
 

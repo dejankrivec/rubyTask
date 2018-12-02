@@ -4,13 +4,12 @@ class UsersController < ApplicationController
  # POST /register token no need
   def register
     @user = User.create(user_params)
-    puts "user instance created"
-   if @user.save
-    response = { message: 'User created successfully'}
-    render json: response, status: :created 
-   else
-    render json: @user.errors, status: :bad
-   end 
+    if @user.save
+      response = { message: 'User created successfully'}
+      render json: response, status: :created 
+    else
+      render json: @user.errors, status: :bad
+    end 
   end
 
   def getUsers
@@ -29,12 +28,12 @@ class UsersController < ApplicationController
 
     sightings = Sighting.where(flower_id: flower)
 
-    if sightings
-      render json: sightings
+    if !sightings.empty?
+      render json: sightings, status: :ok
     else
       render json: {
         message: 'No entries'
-      }
+      }, status: :bad_request
     end
   end
 

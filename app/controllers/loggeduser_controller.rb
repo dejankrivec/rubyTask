@@ -29,7 +29,6 @@ class LoggeduserController < ApplicationController
       if User.exists?(:id => user_id.to_i) and Flower.exists?(:id => flower_id.to_i)
         question = getRandomQuestion();
         sighting = Sighting.create(latitude: latitude, logitude: longitude, image: image, user_id: user_id, flower_id: flower_id, question: question)
-        #likes = Like.create(user_id: user_id, sighting_id: sighting.id, likes: 0)
 
         like = Like.create(user_id: user_id, likes: 0)
         like.sighting = sighting
@@ -63,11 +62,11 @@ class LoggeduserController < ApplicationController
         if like_exist.save
           render json: like_exist, status: :ok 
         else
-          response = { message: 'Something went wrong'}
+          response = { message: 'Sorry we couldnt save like'}
           render json: response, status: :bad 
         end
       else
-        response = { message: 'Something went wrong'}
+        response = { message: 'Wrong sighting id to like'}
         render json: response, status: :bad 
       end
     end
@@ -79,7 +78,6 @@ class LoggeduserController < ApplicationController
       Like.where(user_id: user_id, sighting_id: sighting_id).destroy_all
       Sighting.where(id: sighting_id,user_id: user_id).destroy_all
       
-
       response = { message: 'Deleted'}
       render json: response, status: :ok 
     end
@@ -98,11 +96,11 @@ class LoggeduserController < ApplicationController
         if like_exist.save
           render json: like_exist, status: :ok 
         else
-          response = { message: 'Something went wrong'}
+          response = { message: 'Sorry we couldn destroy likes'}
           render json: response, status: :bad 
         end
       else
-        response = { message: 'Something went wrong'}
+        response = { message: 'Wrong sighting id to destroy likes'}
         render json: response, status: :bad 
       end
     end
