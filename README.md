@@ -32,10 +32,10 @@ Open API x-www-form-urlencoded params
 
     http://localhost:3000/getUsers ## just for testing that we know ids
         response: array of users
-    http://localhost:3000/getFlowers ## just for testing that we know ids
+    http://localhost:3000/getFlowers
         response: array of flowers
     http://localhost:3000/getSightings
-        params: flower:integer
+        params: flower:
 
 Auth API => Authorization = Bearer + token and content-type = application/x-www-form-urlencoded
 
