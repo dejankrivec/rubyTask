@@ -25,12 +25,13 @@ set different host for development,test and production
 
 Open API x-www-form-urlencoded params
 
-    POST http://localhost:3000/auth/login
-        params: email and password
-        response: token
     POST http://localhost:3000/auth/register
         params: email, username and password
         response: string message
+
+    POST http://localhost:3000/auth/login
+        params: email and password
+        response: token
 
     http://localhost:3000/getUsers ## just for testing that we know ids
         response: array of users

@@ -111,8 +111,8 @@ class LoggeduserController < ApplicationController
 
       http = Net::HTTP.new(url.host, url.port)
       http.use_ssl = true
-      http.read_timeout = 0
-      http.open_timeout = 0
+      http.read_timeout = 20
+      http.open_timeout = 20
       req = Net::HTTP::Get.new(url.to_s)
       
       begin
