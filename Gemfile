@@ -68,6 +68,7 @@ gem 'rack-cors', :require => 'rack/cors'
 # background worker
 gem 'sucker_punch'
 
+# for tests
 gem 'factory_bot_rails', '~> 4.0'
 gem 'shoulda-matchers', '~> 3.1'
 

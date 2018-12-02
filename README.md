@@ -19,7 +19,9 @@ set different host for development,test and production
 *** tests ***
 * rails g rspec:install
 * rails db:migrate RAILS_ENV=test
-* rspec spec/requests/users_spec.rb run tests
+
+*** run tests ***
+* rspec spec/requests/users_spec.rb
 
 Open API x-www-form-urlencoded params
 
